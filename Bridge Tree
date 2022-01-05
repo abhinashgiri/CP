@@ -1,0 +1,152 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+struct Bridge{int u,v,w,id;};
+struct Graph
+{
+    int n,timer=0;
+    struct edge
+    {int v,w,id;};
+    vector<vector<edge>>g;
+    vector<bool>br;
+    Graph(int _n,int _m)
+    {
+        n=_n;
+        g.resize(n);
+        br.resize(_m);
+    }
+    void addEgde(int u,int v,int id)
+    {
+        u--,v--; // 0 based indexing
+        g[u].push_back({v,0,id});
+        g[v].push_back({u,0,id});
+    }
+    void dfs(int node,int par,vector<bool>&vis,vector<int>&low,vector<int>&tin,vector<Bridge>&bridges)
+    {
+        vis[node]=1;
+        tin[node]=low[node]=++timer;
+        int child_cnt=0;
+        for(auto &to:g[node])
+        {
+            if(to.v==par)continue;
+            if(vis[to.v])
+            {
+                low[node]=min(low[node],tin[to.v]);
+            }
+            else
+            {
+                dfs(to.v,node,vis,low,tin,bridges);
+                low[node]=min(low[node],low[to.v]);
+                if(low[to.v]>tin[node])bridges.push_back({node,to.v,to.w,to.id});
+            }
+        }
+    }
+    void findBridges(vector<Bridge>&bridges)
+    {
+        vector<int>tin(n),low(n);
+        vector<bool>vis(n);
+        dfs(0,-1,vis,low,tin,bridges);
+        for(auto &e:bridges)
+        {
+            br[e.id]=1;
+        }
+    }
+    bool isBridge(int id)
+    {
+        return br[id];
+    }
+    void explore(int node,int  par,vector<bool>&vis,int com,vector<int>&comp)
+    {
+        vis[node]=1;
+        comp[node]=com;
+        for(auto &to:g[node])
+        {
+            if(to.v==par)continue;
+            if(!vis[to.v] and !isBridge(to.id))
+            {
+                explore(to.v,node,vis,com,comp);
+            }
+        }
+    }
+
+    auto bridgeTree(vector<Bridge>&bridges)
+    {
+
+        vector<bool>vis(n);
+        int com=0;
+        vector<int>componentId(n);
+        for (int i = 0; i < n; ++i)
+        {
+            if(!vis[i])
+            {
+                explore(i,-1,vis,com,componentId);
+                com++;
+            }
+        }
+        vector<vector<int>>tree(com);
+        for(auto &i:bridges)
+        {
+            int u=componentId[i.u];
+            int v = componentId[i.v];
+            if(u==v)continue;
+            tree[u].emplace_back(v);
+            tree[v].emplace_back(u);
+        }
+        return tree;
+    }
+
+    void lengthOfMaxPath(int node,int  par,vector<vector<int>>&tree,int&mxLen,int &ans_node,int depth)
+    {
+        if(mxLen<depth+1)
+        {
+            mxLen=depth+1;
+            ans_node=node;
+        }
+        for(auto &to:tree[node])
+        {
+            if(to==par)continue;
+            lengthOfMaxPath(to,node,tree,mxLen,ans_node,depth+1);
+        }
+    }
+
+    int  lengthOfTheDiameter(vector<vector<int>>&tree)
+    {
+        int mx=0;
+        int node=-1;
+        lengthOfMaxPath(0,-1,tree,mx,node,0);
+        mx=0;
+        int  last_node=-1;
+        lengthOfMaxPath(node,-1,tree,mx,last_node,0);
+        return mx-1;
+    }
+};
+int main()
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    int n,m;
+    cin >> n>>m;
+    Graph G(n,m);
+    for (int i = 1; i <=m ; ++i)
+    {
+        int  u,v;
+        cin>>u>>v;
+        G.addEgde(u,v,i);
+    }
+
+    vector<Bridge>bridges;
+    G.findBridges(bridges);
+    auto T = G.bridgeTree(bridges);
+    if(T.size()<=1)
+    {
+        cout<<0<<"\n";
+        exit(0);
+    }
+    int diameter = G.lengthOfTheDiameter(T);
+    int cntOfBridges =T.size()-1;
+    int ans = cntOfBridges-diameter;
+    cout<<ans<<"\n";
+    
+    return 0;
+}
