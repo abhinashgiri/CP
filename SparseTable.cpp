@@ -3,12 +3,10 @@ using namespace std;
 typedef long long int ll;
 typedef vector<ll> vll;
 vector<int>LOG;
-void build_LOG(int MAX_N)
-{
+void build_LOG(int MAX_N){
     LOG.resize(MAX_N+3);
     LOG[1]=0;
-    for (int i = 2; i <=MAX_N+2 ; ++i)
-    {
+    for (int i = 2; i <=MAX_N+2 ; ++i){
         LOG[i]=LOG[i/2]+1;
     }
 }
@@ -45,8 +43,7 @@ template <class T> struct SparseTable {
     }
 };
 
-int main()
-{
+int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
