@@ -29,12 +29,12 @@ template <class T> struct RMQ {
 
 struct LCA{
     int n;
-    vector<pair<int,int>>eulerTour;
-    vector<int>height;
-    vector<int>first;
-    vector<int>parent;
-    vector<vector<int>>g;
-    RMQ<pair<int,int>>rmq;
+    vector<pair<int,int>> eulerTour;
+    vector<int> height;
+    vector<int> first;
+    vector<int> parent;
+    vector<vector<int>> g;
+    RMQ<pair<int,int>> rmq;
     LCA(int _n):rmq(_n + _n-2){
         n = _n;
         g.resize(n+1);
@@ -50,12 +50,12 @@ struct LCA{
     void dfs(int node,int par,int h=1){
         height[node] = h;
         parent[node] = par;
-        first[node] = eulerTour.size();
-        eulerTour.push_back({height[node],node});
+        first[node] = (int)eulerTour.size();
+        eulerTour.emplace_back(height[node],node);
         for(auto &to:g[node]){
             if(to == par)continue;
             dfs(to,node,h+1);
-            eulerTour.push_back({height[node],node});
+            eulerTour.emplace_back(height[node],node);
         }
     }
     void build(){
@@ -67,8 +67,8 @@ struct LCA{
         if(first[u] > first[v])swap(u,v);
         return rmq.query1(first[u],first[v]).second;
     }
-    int dis(int u,int v){
-        return height[u]+height[v]-2*height[lca(u,v)];
+    int distance(int u,int v){
+        return height[u] + height[v] - 2*height[lca(u,v)];
     }
 };
 
@@ -76,7 +76,7 @@ int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
-    
+
     int n;
     cin>>n;
     LCA a(n);
