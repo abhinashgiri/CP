@@ -1,0 +1,29 @@
+struct MinMaxStack{
+    vector<ll>s,smin={INT_MAX},smax={INT_MIN};
+    void push(ll x){
+        s.push_back(x);
+        smin.push_back(::min(smin.back(),x));
+        smax.push_back(::max(smax.back(),x));
+    }
+    ll pop(){
+        if(s.empty())return -1;
+        ll x = s.back();
+        s.pop_back();
+        smax.pop_back();
+        smin.pop_back();
+        return x;
+    }
+    ll top(){
+        return s.back();
+    }
+    bool empty(){
+        return s.empty();
+    }
+    ll min(){
+        return smin.back();
+    }
+    ll max(){
+        return smax.back();
+    }
+
+};
