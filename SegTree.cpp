@@ -2,12 +2,10 @@
 using namespace std;
 typedef long long int ll;
 
-template <class T> struct SegTree
-{
+template <class T> struct SegTree{
     const T ID = 0;
     int n; vector <T> seg;
-    T comb(T a, T b)
-    {
+    T comb(T a, T b){
         return min(a,b);
     }
     SegTree(int _n) { n = _n; seg.assign(2 * n, ID); }
@@ -25,22 +23,16 @@ template <class T> struct SegTree
         return comb(lnode, rnode);
     }
 };
-int main()
-{
+
+int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
     int n;
     cin>>n;
     SegTree<ll>seg(n);
+
     
-
-
-
-
-
-
-
 
     return 0;
 }
