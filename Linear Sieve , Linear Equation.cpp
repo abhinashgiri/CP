@@ -9,8 +9,7 @@ vector<int> pr;
 
 template <typename T>
 T  gcd_extended(T  a, T  b, T&x , T&y) {
-    if (b == 0)
-    {
+    if (b == 0){
         x = 1;
         y = 0;
         return a;
@@ -21,11 +20,10 @@ T  gcd_extended(T  a, T  b, T&x , T&y) {
     y = x1 - y1 * (a / b);
     return d;
 }
-bool find_solution(ll a, ll b, ll c, ll &x, ll &y)
-{
+
+bool find_solution(ll a, ll b, ll c, ll &x, ll &y){
     ll g = gcd_extended<ll>(a, b, x, y);
-    if (c % g)
-    {
+    if (c % g){
         return false;
     }
     x = x * (c / g);
@@ -34,8 +32,8 @@ bool find_solution(ll a, ll b, ll c, ll &x, ll &y)
     if (b < 0)y *= (-1);
     return true;
 }
-int main()
-{
+
+int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
@@ -47,10 +45,6 @@ int main()
         for (int j=0; j<(int)pr.size() && pr[j]<=lp[i] && i*pr[j]<=N; ++j)
             lp[i * pr[j]] = pr[j];
     }
-
-
-
-
 
     return 0;
 }
