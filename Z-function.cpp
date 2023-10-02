@@ -2,8 +2,7 @@
 using namespace std;
 typedef long long int ll;
 
-vector<int> z_function(string s)
-{
+vector<int> z_function(string s){
     int n = (int) s.length();
     vector<int> z(n);
     for (int i = 1, l = 0, r = 0; i < n; ++i) {
@@ -17,19 +16,12 @@ vector<int> z_function(string s)
     return z;
 }
 
-int main()
-{
+int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
 
 
-
-
-
-
-
-
-
+    
     return 0;
 }
