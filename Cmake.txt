@@ -1,0 +1,35 @@
+cmake_minimum_required(VERSION 3.17)
+project(CF)
+
+set(CMAKE_CXX_STANDARD 17)
+
+add_executable(CF main.cpp)
+
+
+target_precompile_headers(CF PUBLIC /Library/Developer/CommandLineTools/SDKs/MacOSX11.3.sdk/usr/include/c++/v1/bits/stdc++.h)
+set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DABHI  -Wextra -Wall  -fsanitize=address -fsanitize=undefined  ")
+
+
+
+
+# for 256 stack limit   -->   -Wl,-stack_size,0x10000000,-stack_addr,0xc0000000
+
+# for 1GB stack limit
+# g++ -std=c++17 A.cpp -o a -Wl,-stack_size,0x40000000,-stack_addr,0xc0000000  -Wextra -Wall  -fsanitize=address -fsanitize=undefined
+
+
+
+# for 2GB stack limit
+# g++ -std=c++17 A.cpp -o a -Wl,-stack_size,0x80000000,-stack_addr,0xc0000000  -Wextra -Wall  -fsanitize=address -fsanitize=undefined
+
+
+# below flag checks for out of bounds error, add when necessary
+#-fsanitize=address
+
+
+# precompiling hello.h
+# clang++ -stdlib=libstdc++ -x c++-header hello.h -o hello.h.pch  or -stdlib=libc++
+#
+# passing include while compiling main.cpp with hello.h
+#clang++ -stdlib=libstdc++ -include hello.h main.cpp -o main
+add_executable(main main.cpp)
